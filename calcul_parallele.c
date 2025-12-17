@@ -4,17 +4,18 @@
 #include <pthread.h>
 
 #define TAILLE_DONNEES 10
-#define MULTIPLICATEUR 1000
+#define MULTIPLICATEUR 10000
 
 static const int DONNEES[TAILLE_DONNEES] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
 typedef struct {
     int valeur;
     int multiplicateur;
+    int resultat;
 } args_t;
 
 void* calcul_thread(void* arg) {
-    thread_args_t* args = (thread_args_t*)arg;
+    args_t* args = (args_t*)arg;
     int local_res = 0;
 
     for (int j = 0; j < MULTIPLICATEUR; j++) {
@@ -34,7 +35,7 @@ int main(void) {
     clock_gettime(CLOCK_MONOTONIC, &debut);
 
     pthread_t threads[TAILLE_DONNEES];
-    thread_args_t args[TAILLE_DONNEES];
+    args_t args[TAILLE_DONNEES];
     int somme = 0;
 
     
@@ -57,7 +58,7 @@ int main(void) {
         
 
     clock_gettime(CLOCK_MONOTONIC, &fin);
-    long duree = (fin.tv_sec - debut.tv_sec) * 1000 + 
+    long int duree = (fin.tv_sec - debut.tv_sec) * 1000 + 
                  (fin.tv_nsec - debut.tv_nsec) / 1000000;
 
     printf("Résultat total : %ld\n", somme);
